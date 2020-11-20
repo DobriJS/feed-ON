@@ -80,6 +80,7 @@ exports.updatePost = (req, res, next) => {
   const postId = req.params.postId;
   const title = req.body.title;
   const content = req.body.content;
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new Error("Validation failed, entered data is incorrect.");
     error.statusCode = 422;
