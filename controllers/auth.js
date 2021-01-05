@@ -1,4 +1,4 @@
-const { validationResult, Result } = require("express-validator");
+const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -48,11 +48,11 @@ exports.login = (req, res, next) => {
         throw error;
       }
       loadedUser = user;
-      bcrypt.compare(password, user.password);
+      return bcrypt.compare(password, user.password);
     })
     .then((isEqual) => {
       if (!isEqual) {
-        const error = new Error("Wrong Password!");
+        const error = new Error("Wrong password!");
         error.statusCode = 401;
         throw error;
       }
@@ -70,6 +70,6 @@ exports.login = (req, res, next) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
-      next();
+      next(err);
     });
 };
